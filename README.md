@@ -53,6 +53,4 @@ pnpm dev
 
 ## Further Reading
 
-- Dive deeper into how we built [StellarGPT for Stellar Docs](https://stellar.com/blog/stellarGPT-docs).
-- Explore [Pinecone's vector embeddings](https://pinecone.com/docs/guides/database/extensions/pinecone).
-- Watch our "Behind the Scenes" [video](https://youtu.be/Yhtjd7yGGGA) on the StellarGPT YouTube Channel.
+- Explore [Pinecone's vector embeddings](https://www.pinecone.io/learn/vector-embeddings/).
