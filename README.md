@@ -33,7 +33,7 @@ sequenceDiagram
         loop 2. Create & store embeddings
             Vercel->>OpenAI (API): create embedding for page section
             OpenAI (API)->>Vercel: embedding vector(1536)
-            Vercel->>DB (Pinecone): store embedding for page section
+            Vercel->>[(DB (Pinecone)  )]: store embedding for page section
         end
     end
 ```
