@@ -7,12 +7,12 @@ StellarGPT is a powerful tool that leverages the capabilities of OpenAI's GPT-3.
 
 Creating a custom StellarGPT involves:
 
-1. **Build Time**: Pre-process the knowledge base (`.mdx` files in the `pages` folder).
-2. **Build Time**: Generate embeddings using Pinecone and store them.
-3. **Runtime**: Execute vector similarity search to identify content relevant to the user's query.
-4. **Runtime**: Inject the identified content into the OpenAI GPT-3.5 Turbo model prompt and relay the response to the user.
+1. **👷 Build time**: Pre-process the knowledge base (`.mdx` files in the `pages` folder).
+2. **👷 Build time**: Generate embeddings using Pinecone and store them.
+3. **🏃 Runtime**: Execute vector similarity search to identify content relevant to the user's query.
+4. **🏃 Runtime**: Inject the identified content into the OpenAI GPT-3.5 Turbo model prompt and relay the response to the user.
 
-### Build Time
+## 👷 Build Time
 
 Steps 1 and 2 occur during the build phase. The [`generate-embeddings`](./lib/generate-embeddings.ts) script is executed, which:
 
@@ -20,7 +20,24 @@ Steps 1 and 2 occur during the build phase. The [`generate-embeddings`](./lib/ge
 - Creates embeddings for each section using OpenAI's API.
 - Stores the embeddings using Pinecone.
 
-### Runtime
+```mermaid
+sequenceDiagram
+    participant Vercel
+    participant DB (pgvector)
+    participant OpenAI (API)
+    loop 1. Pre-process the knowledge base
+        Vercel->>Vercel: Chunk .mdx pages into sections
+        loop 2. Create & store embeddings
+            Vercel->>OpenAI (API): create embedding for page section
+            OpenAI (API)->>Vercel: embedding vector(1536)
+            Vercel->>DB (pgvector): store embedding for page section
+        end
+    end
+```
+
+
+
+## 🏃 Runtime
 
 Steps 3 and 4 are executed during runtime, i.e., when a user submits a query. The process involves:
 
