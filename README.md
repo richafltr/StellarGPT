@@ -23,18 +23,18 @@ Steps 1 and 2 occur during the build phase. The [`generate-embeddings`](./lib/ge
 
 
 ```mermaid
-
-graph LR
-    Vercel[Vercel]
-    OpenAI[OpenAI (API)]
-    DB[(DB (Pinecone))]
-
-    Vercel --> VercelProcess[Chunk .mdx pages into sections]
-    VercelProcess --> Embedding[Create embedding for page section]
-    Embedding --> OpenAI
-    OpenAI --> Vercel
-    Vercel --> DB[Store embedding for page section]
-
+sequenceDiagram
+    participant Vercel
+    participant DB (pgvector)
+    participant OpenAI (API)
+    loop 1. Pre-process the knowledge base
+        Vercel->>Vercel: Chunk .mdx pages into sections
+        loop 2. Create & store embeddings
+            Vercel->>OpenAI (API): create embedding for page section
+            OpenAI (API)->>Vercel: embedding vector(1536)
+            Vercel->>DB (pgvector): store embedding for page section
+        end
+    end
 ```
 
 
@@ -49,6 +49,26 @@ Steps 3 and 4 are executed during runtime, i.e., when a user submits a query. Th
 - Streaming the model's response back to the user.
 
 Relevant files include the [`SearchDialog` (Client)](./components/SearchDialog.tsx) component and the [`vector-search` (Edge Function)](./pages/api/vector-search.ts).
+
+
+```mermaid
+sequenceDiagram
+    participant Client
+    participant Edge Function
+    participant DB (Pinecone)
+    participant OpenAI (API)
+    Client->>Edge Function: { query: What is Soroban? }
+    critical 3. Perform vector similarity search
+        Edge Function->>OpenAI (API): create embedding for query
+        OpenAI (API)->>Edge Function: embedding vector(1536)
+        Edge Function->>DB (Pinecone): vector similarity search
+        DB (Pinecone)->>Edge Function: relevant docs content
+    end
+    critical 4. Inject content into prompt
+        Edge Function->>OpenAI (API): completion request prompt: query + relevant docs content
+        OpenAI (API)-->>Client: text/event-stream: completions response
+    end
+```
 
 ## Local Development
 
