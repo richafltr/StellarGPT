@@ -26,7 +26,7 @@ Steps 1 and 2 occur during the build phase. The [`generate-embeddings`](./lib/ge
 
 sequenceDiagram
     participant Vercel
-    participant DB (Pinecone)
+    participant [(DB (Pinecone) )]
     participant OpenAI (API)
     loop 1. Pre-process the knowledge base
         Vercel->>Vercel: Chunk .mdx pages into sections
