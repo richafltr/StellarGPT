@@ -20,7 +20,10 @@ Steps 1 and 2 occur during the build phase. The [`generate-embeddings`](./lib/ge
 - Creates embeddings for each section using OpenAI's API.
 - Stores the embeddings using Pinecone.
 
+
+
 ```mermaid
+
 sequenceDiagram
     participant Vercel
     participant DB (Pinecone)
