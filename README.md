@@ -24,18 +24,17 @@ Steps 1 and 2 occur during the build phase. The [`generate-embeddings`](./lib/ge
 
 ```mermaid
 
-sequenceDiagram
-    participant Vercel
-    participant [(DB (Pinecone) )]
-    participant OpenAI (API)
-    loop 1. Pre-process the knowledge base
-        Vercel->>Vercel: Chunk .mdx pages into sections
-        loop 2. Create & store embeddings
-            Vercel->>OpenAI (API): create embedding for page section
-            OpenAI (API)->>Vercel: embedding vector(1536)
-            Vercel->>[(DB (Pinecone)  )]: store embedding for page section
-        end
-    end
+graph LR
+    Vercel[Vercel]
+    OpenAI[OpenAI (API)]
+    DB[(DB (Pinecone))]
+
+    Vercel --> VercelProcess[Chunk .mdx pages into sections]
+    VercelProcess --> Embedding[Create embedding for page section]
+    Embedding --> OpenAI
+    OpenAI --> Vercel
+    Vercel --> DB[Store embedding for page section]
+
 ```
 
 
