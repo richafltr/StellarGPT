@@ -20,7 +20,17 @@ Steps 1 and 2 occur during the build phase. The [`generate-embeddings`](./lib/ge
 - Creates embeddings for each section using OpenAI's API.
 - Stores the embeddings using Pinecone.
 
+```mermaid
+graph TD;
+    A[Data Preprocessing] -->|Parse & Translate| B[Embedding Generation];
+    B --> C[Hybrid Indexing];
+    D[User Query] --> E[Search Engine];
+    E -->|Query Processing & Execution| C;
+    C --> F[Response Generation];
+    F --> G[User Interface];
+    G --> D;
 
+```
 
 ```mermaid
 sequenceDiagram
